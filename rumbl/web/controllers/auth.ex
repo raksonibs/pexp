@@ -36,4 +36,8 @@ defmodule Rumbl.Auth do
         dummy_checkpw()
         {:error, :not_found, conn}
   end
+
+  def logout(conn) do 
+    configure_session(conn, drop: true)
+  end
 end
