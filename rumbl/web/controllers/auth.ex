@@ -1,3 +1,5 @@
+import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
+
 defmodule Rumbl.Auth do 
   import Plug.Conn
 
@@ -18,5 +20,20 @@ defmodule Rumbl.Auth do
     |> assign(:current_user, user)
     |> put_session(:user_id, user.id)
     |> configure_session(renew: true)
+  end
+
+  def login_by_username_and_pass(conn, username, given_pass, opts) do 
+    repo = Keyword.fetch!(opts, :repo)
+    user = repo.get_by(Rumbl.User, username: username)
+
+    cond do 
+      user && checkpw(given_pass, user.password_hash) ->
+        {:ok, login(conn, user)}
+      user ->
+        {:error, :unauthorized, conn}
+      true -> 
+        # hardens against password attacks
+        dummy_checkpw()
+        {:error, :not_found, conn}
   end
 end
