@@ -1,0 +1,11 @@
+<h1>Listing User</h1>
+<table class="table">
+    <tr>
+      <td>
+        <b><%= render "user.html", user: @user %>
+      </td>
+      <td>
+        <%= link "View All", to: user_path(@conn, :index) %>
+      </td>
+    </tr>
+</table>
