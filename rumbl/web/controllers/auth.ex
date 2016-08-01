@@ -35,6 +35,7 @@ defmodule Rumbl.Auth do
         # hardens against password attacks
         dummy_checkpw()
         {:error, :not_found, conn}
+    end
   end
 
   def logout(conn) do 

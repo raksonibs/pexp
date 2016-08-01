@@ -16,11 +16,11 @@ defmodule Rumbl.SessionController do
           |> put_flash(:error, "Invalid")
           |> render("new.html")
     end
+  end
 
-    def delete(conn, _) do 
-      conn
-      |> Rumbl.Auth.logout()
-      |> redirect(to: page_path(conn, :index))
-    end
+  def delete(conn, _) do 
+    conn
+    |> Rumbl.Auth.logout()
+    |> redirect(to: page_path(conn, :index))
   end
 end
