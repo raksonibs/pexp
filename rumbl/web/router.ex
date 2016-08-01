@@ -16,11 +16,16 @@ defmodule Rumbl.Router do
 
   scope "/", Rumbl do
     pipe_through :browser # Use the default browser stack
-    
-    resources "/videos", VideoController
+
     resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:delete, :new, :create]
     get "/", PageController, :index
+  end
+
+  scope '/manage', Rumbl do 
+    pipe_through [:browser, :authenticate_user]
+    
+    resources "/videos", VideoController
   end
 
   # Other scopes may use custom stacks.
