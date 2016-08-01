@@ -19,6 +19,7 @@ defmodule Rumbl.User do
     model
     |> cast(params, ~w(name username))
     |> validate_length(:username, min: 1, max: 20)
+    |> unique_constraint(:username)
   end
 
   # put pass hash calls prviate function to has password an add to result
@@ -38,6 +39,14 @@ defmodule Rumbl.User do
         changeset
     end
 
+  end
+
+  def user_count() do 
+    from u in Rumbl.User, select: count(u.id)
+  end
+
+  def specific_count() do 
+    from u in user_count, where: ilike(u.username, ^"%j")
   end
 
   # virtual field is an intermediate field before hasing password into hash. not peresisted.
