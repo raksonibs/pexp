@@ -1,7 +1,7 @@
 defmodule Rumbl.UserController do
   alias Rumbl.User
   use Rumbl.Web, :controller
-  plug :user_authenticate when action in [:index, :show]
+  plug :authenticate_user when action in [:index, :show]
 
   def index(conn, _params) do
     # everything available by name Rumbl.X so Rumbl.Repo is repo

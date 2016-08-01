@@ -22,9 +22,9 @@ defmodule Rumbl.Router do
     get "/", PageController, :index
   end
 
-  scope '/manage', Rumbl do 
+  scope "/manage", Rumbl do 
     pipe_through [:browser, :authenticate_user]
-    
+
     resources "/videos", VideoController
   end
 
