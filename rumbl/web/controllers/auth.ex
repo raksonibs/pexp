@@ -13,8 +13,14 @@ defmodule Rumbl.Auth do
   def call(conn, repo) do 
     # call receives the repository from init and then checks if a :user_id is stored in the session. If one exists, we look it up and assign the result in the connection. assign is a function imported from Plug.Conn that slightly transforms the connec- tion—in this case, storing the user (or nil) in conn.assigns. That way, the :cur- rent_user will be available in all downstream functions including controllers and views.
     user_id = get_session(conn, :user_id)
-    user = user_id && repo.get(Rumbl.User, user_id)
-    assign(conn, :current_user, user)
+    cond do 
+      user = conn.assigns[:current_user] ->
+        conn 
+      user = user_id && repo.get(Rumbl.User, user_id) ->
+        assign(conn, :current_user, user)
+      true ->
+        assign(conn, :current_user, nil)
+    end    
   end
 
   def login(conn, user) do 
