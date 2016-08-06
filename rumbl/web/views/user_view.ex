@@ -9,4 +9,8 @@ defmodule Rumbl.UserView do
     # enum.at index at the split value
   end
 
+  def render("user.json", %{user: user}) do 
+    %{id: user.id, username: user.username}
+  end
+
 end
