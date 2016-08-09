@@ -1,19 +1,33 @@
 defmodule Physics.Rocketry do
+  import Calcs
+  import Physics.Laws
+  import Planets
+  import Converter
   
+  def force_calc(planet) when is_map(planet) do 
+    planet 
+      |> calculate_force
+      |> Converter.to_velocity
+      |> Converter.round_to
+  end
+  
+  def escape_velocity(:moon) do 
+    moon |> escape_velocity
+  end
+
   def escape_velocity(:earth) do 
-    %{mass: 5.972e24, radius: 6.371e6} |> escape_velocity
+    earth |> escape_velocity
   end
 
   def escape_velocity(planet) when is_map(planet) do 
     planet 
       |> calculate_escape
       |> Converter.convert_to_km
-      |> Converter.rounded_to_nearest_tenth
+      |> Converter.round_to
   end
 
   defp calculate_escape(%{mass: mass, radius: radius}) do 
-    newtons_constant = 6.67e-11
-    2 * newtons_constant * mass /radius 
-      |> :math.sqrt
+    2 * newtons_gravitational_constant * mass /radius 
+      |> square_root
   end
 end
