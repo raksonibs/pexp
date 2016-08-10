@@ -8,11 +8,11 @@ defmodule Faker do
   end
 
   def paragraph(num_words, total_words) when num_words == 0 do
-   Enum.join(total_words, " ")
+    Enum.join(total_words, " ")
   end
 
   def paragraph(num_words, total_words) when num_words > 0 do 
-    given_word = (word |> check_last_word_period(total_words))
+    given_word = (word |> check_capital(total_words))
     paragraph(num_words - 1, total_words ++ [given_word])
   end
 
@@ -29,37 +29,41 @@ defmodule Faker do
   end
 
   def put_period(word) do 
-    String.last(word) == "A"
-      |> "#{word}."
+    ~r{[Aa]}
+      |> Regex.named_captures(word) 
+      |> put_period(word)
   end
 
-  def check_last_word_period(total_words, word) do
-    # how to get around this if?
-    # if (Enum.at(total_words, -1).last) == "." do
-    check_capital(total_words)
-      |> maybe_do_something(word)
+  def put_period(%{}, word) do 
+    "#{word}."
   end
 
-  def check_capital([]) do 
-    false
+  def put_period(nil, word) do 
+    "#{word}"
   end
 
-  def check_capital(false) do 
-    false
+  def check_capital(word, [ head | tail ]) do
+    ~r{\.}
+      |> capture_regex([ head | tail ])
+      |> maybe_capitalize(word)
   end
 
-  def check_capital([ head | tail]) do 
-    tail.last.last == "."
+  def capture_regex(regex, arr) do
+    last = Enum.at(arr, -1)
+      |> String.last()
+    Regex.named_captures(regex, last)          
   end
 
-
-  def maybe_do_something(true, word) do
-    String.capitalize(word)
-  end
-
-  def maybe_do_something(false, word) do 
+  def check_capital(word, []) do 
     word
   end
 
+  def maybe_capitalize(nil, word) do 
+    word
+  end
+
+  def maybe_capitalize(%{}, word) do
+    String.capitalize(word)
+  end
 end
 

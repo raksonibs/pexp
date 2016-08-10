@@ -4,5 +4,5 @@ defmodule Calcs do
   def cubed(val), do: val * val * val
   def pi, do: :math.pi
   def third_root(val), do: :math.pow(val, -3)
-  def random(num \\ 100000) when is_integer(num), do: :rand.uniform * num
+  def random(num \\ 1000000000) when is_integer(num), do: :rand.uniform * num
 end
