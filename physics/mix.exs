@@ -14,8 +14,10 @@ defmodule Physics.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :timex, :postgrex, :ecto]]
+    [applications: [:logger, :timex, :postgrex, :ecto],
+    mod: {Physics, []}]
   end
+  # mod key tells mix have modules excuted on startup, and here doing physics.ex
 
   # Dependencies can be Hex packages:
   #
