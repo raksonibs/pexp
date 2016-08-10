@@ -6,9 +6,10 @@ defmodule SolarFlareRecorder do
   end
 
   def record_flare(pid, flare) do 
-    Agent.cast pid, fn(flares) ->
+    Agent.get_and_update pid, fn(flares) ->
+      new_flares = List.insert_at(flares, -1, flare)
       add_flare(flare)
-      List.insert_at(flares, -1, flare)
+      {new_flares, new_flares}
     end
   end
 
@@ -33,8 +34,8 @@ defmodule SolarFlareRecorder do
   end
 end
 
-{:ok, pid} = SolarFlareRecorder.start_link
 Enum.map 1..5000, fn(_n) ->
+  {:ok, pid} = SolarFlareRecorder.start_link
   SolarFlareRecorder.record_flare(pid, %{classification: "X", scale: 33, stations: 10})
 end
 IO.inspect "DONE"
