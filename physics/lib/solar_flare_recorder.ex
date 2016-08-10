@@ -1,6 +1,12 @@
 defmodule SolarFlareRecorder do
     use GenServer
 
+#   task = Task.async(SolarFlareRecorder.record_flare(flare))
+# #that could take a while, so let's do some other things
+# #...
+# #now that we're done, let's check our task and wait for the result
+# result = Task.await(task)
+
     def start_link do
       # creates pcors in vm binding current module to process idand an empty list )our accumlator
       # GenServer.start_link __MODULE__, []
